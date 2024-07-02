@@ -1,0 +1,18 @@
+<% layout('/layouts/boilerplate.ejs') %>
+<h1>New Campground</h1>
+<div>
+    <form action="/campgrounds" method="post">
+        <label for="title">Title</label>
+        <input type="text" id="title" placeholder="Enter the title" name="title">
+        <br>
+        <br>
+        <label for="Location">Location</label>
+        <input type="text" id="Location" placeholder="Enter the Location" name="location">
+        <br>
+        <br>
+        <button>Add Campground</button>
+    </form>
+</div>
+<footer>
+    <a href="/campgrounds">Back</a>
+</footer>
