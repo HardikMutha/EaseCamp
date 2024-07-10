@@ -2,28 +2,39 @@
 <div class="mx-auto w-50">
 <h2 class="d-flex justify-content-center">Welcome to Yelp Camp</h2>
 <div>
-    <form action="/campgrounds" method="post">
+    <form action="/campgrounds" method="post" novalidate class="needs-validation">
         <div class="form-floating mb-3">
             <input type="text" id="floatingInput" placeholder="Enter the title" name="title" class="form-control" required>
             <label for="floatingInput">Title</label>
+            <div class="valid-feedback">
+                Looks Good
+            </div>
         </div>
         <div class="form-floating mb-3">
             <input type="text" id="Location" placeholder="Enter the Location" name="location" class="form-control" required>
             <label for="Location">Location</label>
+            <div class="valid-feedback">
+                Looks Good
+            </div>
         </div>
         <div class="form-floating mb-3">
             <input type="text" id="ImgURL" placeholder="Enter the ImgURL" class="form-control" name="img" required>
             <label for="ImgURL">Image URL</label>
+            <div class="valid-feedback">
+                Looks Good
+            </div>
         </div>
-
         <label for="priceinput" class="form-label">Price</label>
         <div class="input-group mb-3">
             <span class="input-group-text" id="basic-addon1">$</span>
             <input type="text" class="form-control" placeholder="0.00" aria-label="Username" aria-describedby="basic-addon1" id="priceinput" name="price" required>
+            <div class="valid-feedback">
+                Looks Good
+            </div>
         </div>
 
         <div class="form-floating mb-3">
-            <textarea class="form-control" placeholder="Description of the Campground" id="floatingTextarea" name="description"></textarea>
+            <textarea class="form-control" placeholder="Description of the Campground" id="floatingTextarea" name="description" required></textarea>
             <label for="floatingTextarea">Description</label>
           </div>        
         <button class="btn btn-success mb-4">Add Campground</button>
