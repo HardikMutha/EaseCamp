@@ -1,6 +1,6 @@
 <% layout('/layouts/boilerplate.ejs') %>
 <div class="row d-flex justify-content-center">
-  <div class="card col-6 mb-4" style="width: 28rem;">
+  <div class="card col-6 mb-4" style="width: 28rem; height: fit-content;">
     <img src="/images.jpg" class="card-img-top">
     <div class="card-body">
       <h4 class="card-title"><%=camground.title%></h4>
@@ -29,11 +29,11 @@
           <input type="range" name="rating" id="rate" min="1" max="5" step="1">
         </div>
         <label for="body" class="d-block mb-2">Review</label>
-        <textarea name="text" id="body" rows="4" cols="45" placeholder="Please Enter a Review" required class="form-control mb-3"></textarea>
+        <textarea name="text" id="body" rows="4" cols="45" placeholder="Please Enter a Review" required class="form-control mb-3" style="width: 28rem;"></textarea>
       <button class="btn btn-success mb-3">Submit</button>
     </form>
     <% for(let review of camground.reviews) {%>
-      <div class="card mb-3 ms-3">
+      <div class="card mb-3" style="width: 28rem;">
         <div class="card-body">
           <h5 class="card-title">Rating : <%= review.rating%></h5>
           <p class="card-text"><%= review.text%></p>

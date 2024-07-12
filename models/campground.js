@@ -2,6 +2,7 @@ const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const Review = require('./reviews.js');
 
+
 const CampgroundSchema = new Schema({
     title : String,
     location : String,
@@ -17,7 +18,7 @@ const CampgroundSchema = new Schema({
 CampgroundSchema.post('findOneAndDelete',async function(doc){
     if(doc)
     {
-        await Review.remove({_id:{
+        await Review.deleteOne({_id:{
             $in:doc.reviews
         }});
     }
