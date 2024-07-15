@@ -32,7 +32,6 @@ router.get("/campgrounds/:id",
   const camground = await campgrounds.findById(req.params.id).populate('reviews');
   if(!camground)
   {
-    req.flash('error','Requested Campground Does Not Exist');
     return res.redirect('/campgrounds');
   }
   res.render("campgrounds/show", {camground});
@@ -42,7 +41,6 @@ router.post("/campgrounds",
   validateCampground,
   catchAsync(async (req, res, next) => {
     const newcg = req.body;
-    req.flash('success','Campground Saved Successfully');
     try 
     {
       await CampgroundSchema.validateAsync(newcg);
@@ -55,7 +53,6 @@ router.post("/campgrounds",
       const msg = err.details.map((el) => el.message).join(",");
       err.message = msg;
       err.statusCode = 400;
-      //req.flash('failure','An Error Occured While Saving the Campground');
       next(err);
     }
   })
@@ -76,7 +73,6 @@ router.put(
     const { id } = req.params;
     const nice = req.body;
     await campground.findByIdAndUpdate(id, nice);
-    //req.flash('success','Campground Updated Successfully');
     res.redirect(`/campgrounds/${id}`);
   })
 );

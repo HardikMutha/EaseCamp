@@ -1,0 +1,26 @@
+<% layout('/layouts/boilerplate.ejs')%>
+<h1 class="mx-auto mb-4" style="width: fit-content;">Register</h1>
+<form action="/register" method="post" class="needs-validation" novalidate>
+    <div class="form-floating mb-3">
+        <input type="text" id="Username" placeholder="Enter the Username" name="username" class="form-control" required>
+        <label for="Username">Username</label>
+        <div class="valid-feedback">
+            Looks Good
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="email" id="email" placeholder="example@xyz.com" name="email" class="form-control" required>
+        <label for="email">Email</label>
+        <div class="valid-feedback">
+            Looks Good
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" id="password" placeholder="Enter the password" name="password" class="form-control" required>
+        <label for="password">Password</label>
+        <div class="valid-feedback">
+            Looks Good
+        </div>
+    </div>
+    <button class="btn btn-success">Submit</button>
+</form>

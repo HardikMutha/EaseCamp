@@ -8,11 +8,12 @@ const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
+const userRoutes = require('./routes/user');
 const session = require('express-session');
 const cookieParser = require('cookie-parser');
-const flash = require('connect-flash');
-
-
+const User = require('./models/user');
+const passport = require('passport');
+const LocalStrategy = require('passport-local');
 
 mongoose
   .connect(URL)
@@ -31,17 +32,22 @@ app.engine("ejs", ejsMate);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static("./statics/"));
-app.use(flash());
 app.use(cookieParser());
-app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{httpOnly:true,secure:true,maxAge:1000*60*60}}));
+app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{maxAge:1000*60*60*24*3}}));
+app.use(passport.initialize());
+app.use(passport.session());
+passport.use(User.createStrategy());
+
 app.use((req,res,next)=>{
-  res.locals.success = req.flash('success');
   next();
 });
 
-
 app.use("/", campgroundRoutes);
 app.use("/", reviewRoutes);
+app.use("/",userRoutes);
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
 
 
 //const sessionConfig = {secret:'thisismysecretkey',saveUninitialized:false,resave:false,cookie:{secure : true}}; 
@@ -53,8 +59,8 @@ app.listen(3000, () => {
   console.log("Listening on port 3000");
 });
 
+
 app.get("/", (req, res) => {
-  console.log(req.cookies);
   res.render("homepg");
 });
 
@@ -63,3 +69,4 @@ app.use((err, req, res, next) => {
   if (!err.statusCode) err.statusCode = 500;
   res.status(err.statusCode).render("campgrounds/errors", { err });
 });
+

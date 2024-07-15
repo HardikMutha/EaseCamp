@@ -1,0 +1,19 @@
+<% layout('/layouts/boilerplate.ejs')%>
+<h1 class="mx-auto mb-4" style="width: fit-content;">Login</h1>
+<form action="/login" method="post" class="needs-validation" novalidate>
+    <div class="form-floating mb-3">
+        <input type="text" id="Username" placeholder="Enter the Username" name="username" class="form-control" required>
+        <label for="Username">Username</label>
+        <div class="valid-feedback">
+            Looks Good
+        </div>
+    </div>
+    <div class="form-floating mb-3">
+        <input type="password" id="password" placeholder="Enter the password" name="password" class="form-control" required>
+        <label for="password">Password</label>
+        <div class="valid-feedback">
+            Looks Good
+        </div>
+    </div>
+    <button class="btn btn-success">Submit</button>
+</form>
