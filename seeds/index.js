@@ -30,8 +30,11 @@ const seedDB = async function()
             title:`${sample(places)} ${sample(descriptors)}`,
             location: `${destinations[newnum].city} ${destinations[newnum].state}`,
             img :`https://picsum.photos/400?random=${Math.random()}`,
-            description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, similique! Necessitatibus velit voluptate omnis molestiae praesentium. Magni, quod sed molestias ipsa nostrum et adipisci culpa, voluptas alias at rerum corrupti!'
-        });
+            price:price,
+            description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, similique! Necessitatibus velit voluptate omnis molestiae praesentium. Magni, quod sed molestias ipsa nostrum et adipisci culpa, voluptas alias at rerum corrupti!',
+            author : '66958784c6a9335490cc2748'
+        }
+    );
         await newground.save();
     }
 };

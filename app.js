@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const bodyParser = require("body-parser");
 const methodOverride = require("method-override");
 const ejsMate = require("ejs-mate");
+const flash = require('connect-flash');
 const campgroundRoutes = require("./routes/campgrounds");
 const reviewRoutes = require("./routes/reviews");
 const userRoutes = require('./routes/user');
@@ -13,7 +14,6 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 const passport = require('passport');
-const LocalStrategy = require('passport-local');
 
 mongoose
   .connect(URL)
@@ -34,11 +34,16 @@ app.use(methodOverride("_method"));
 app.use(express.static("./statics/"));
 app.use(cookieParser());
 app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{maxAge:1000*60*60*24*3}}));
+app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
 passport.use(User.createStrategy());
 
-app.use((req,res,next)=>{
+app.use((req,res,next)=>
+{
+  res.locals.success = req.flash('success');
+  res.locals.error = req.flash('error');
+  res.locals.user = req.user;
   next();
 });
 

@@ -2,44 +2,37 @@ const express = require('express')
 const router = express.Router();
 const {reviewSchema} = require("../Schema");
 const catchAsync = require("../utils/catchasync");
-const campground = require("../models/campground");
-const path = require("path");
-const campgrounds = require(path.join(__dirname, "../models/campground"));
+const rw = require('../controllers/reviews');
 const Review = require("../models/reviews");
-
+const {isAllowed} = require('../middleware');
 
 async function validateReview(req,res,next){
     try
     {
-        const data = await reviewSchema.validateAsync(req.body);
+        await reviewSchema.validateAsync(req.body);
         next();
     }
     catch(err){
         next(err);
     }
 };
+
 //router.use(cookieParser());
 //router.use(session({secret:'thisismysecretkey'}));
+const isReviewOwner = async(req,res,next)=>{
+    const {reviewid} = req.params;
+    const {id} = req.params;
+    const rev = await Review.findById(reviewid).populate('author');
+    if(!rev.author._id.equals(req.user.id))
+    {
+        req.flash('error','Not Allowed')
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    next();
+};
 
+router.post("/campgrounds/:id/review",isAllowed,validateReview,catchAsync(rw.postNewReview));
 
-
-router.post("/campgrounds/:id/review",validateReview,
-    catchAsync(async (req, res) => {
-    const campground = await campgrounds.findById(req.params.id);
-    //console.log(req.body);
-    const newreview = new Review(req.body);
-    campground.reviews.push(newreview);
-    await campground.save();
-    await newreview.save();
-    res.redirect(`/campgrounds/${campground._id}`);
-  })
-);
-
-router.delete('/campgrounds/:id/review/:reviewid',catchAsync(async (req,res)=>{
-    const {id,reviewid} = req.params;
-    await campground.findByIdAndUpdate(id,{$pull:{ reviews: reviewid}});
-    await Review.deleteOne({_id : reviewid});
-    res.redirect(`/campgrounds/${id}`);
-}));
+router.delete('/campgrounds/:id/review/:reviewid',isAllowed,isReviewOwner,catchAsync(rw.deleteReview));
 
 module.exports = router;
