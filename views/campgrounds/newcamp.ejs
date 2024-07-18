@@ -2,7 +2,7 @@
 <div class="mx-auto w-50">
 <h2 class="d-flex justify-content-center">Welcome to Ease Camp</h2>
 <div>
-    <form action="/campgrounds" method="post" novalidate class="needs-validation">
+    <form action="/campgrounds" method="post" novalidate class="needs-validation" enctype="multipart/form-data">
         <div class="form-floating mb-3">
             <input type="text" id="floatingInput" placeholder="Enter the title" name="title" class="form-control" required>
             <label for="floatingInput">Title</label>
@@ -17,12 +17,9 @@
                 Looks Good
             </div>
         </div>
-        <div class="form-floating mb-3">
-            <input type="text" id="ImgURL" placeholder="Enter the ImgURL" class="form-control" name="img" required>
-            <label for="ImgURL">Image URL</label>
-            <div class="valid-feedback">
-                Looks Good
-            </div>
+        <div class="mb-3">
+            <label for="formFileMultiple" class="form-label">Add Images (.png,.jpg, .jpeg)</label>
+            <input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
         </div>
         <label for="priceinput" class="form-label">Price</label>
         <div class="input-group mb-3">

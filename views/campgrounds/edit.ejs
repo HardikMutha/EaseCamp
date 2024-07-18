@@ -2,7 +2,7 @@
 <div class="mx-auto w-50">
     <h2 class="d-flex justify-content-center">Edit Campground</h2>
     <div>
-        <form action="/campgrounds/<%=camground._id%>?_method=PUT" method="POST">
+        <form action="/campgrounds/<%=camground._id%>?_method=PUT" method="POST" enctype="multipart/form-data">
             <div class="form-floating mb-3">
                 <input type="text" id="floatingInput" placeholder="Enter the title" name="title" class="form-control" required value="<%= camground.title%>">
                 <label for="floatingInput">Title</label>
@@ -11,11 +11,11 @@
                 <input type="text" id="Location" placeholder="Enter the Location" name="location" class="form-control" required value="<%= camground.location%>">
                 <label for="Location">Location</label>
             </div>
-            <div class="form-floating mb-3">
-                <input type="text" id="ImgURL" placeholder="Enter the ImgURL" class="form-control" name="img" required value="<%= camground.img %>">
-                <label for="ImgURL">Image URL</label>
-            </div>
-    
+            <div class="mb-3">
+                <label for="formFileMultiple" class="form-label">Add Images (.png,.jpg, .jpeg)</label>
+                <input class="form-control" type="file" id="formFileMultiple" name="image" multiple>
+              </div>
+              
             <label for="priceinput" class="form-label">Price</label>
             <div class="input-group mb-3">
                 <span class="input-group-text" id="basic-addon1">$</span>
@@ -28,8 +28,13 @@
               </div>        
             <button class="btn mb-4" style="background-color: #5dbea3;">Edit</button>
         </form>
+
+        <% for(let i=0;i<camground.img.length;i++){ %>
+            <img src="<%=camground.img[i].url %>">
+        <% } %>
+
     </div>
     <footer>
         <a href="/campgrounds" class="btn btn-secondary mb-5">Back</a>
     </footer>
-    </div>
+</div>

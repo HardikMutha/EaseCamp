@@ -1,3 +1,9 @@
+if(process.env.NODE_ENV !== 'production')
+{
+  require('dotenv').config();
+}
+
+
 const URL = "mongodb://localhost:27017/Campground";
 const express = require("express");
 const app = express();
@@ -15,9 +21,7 @@ const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 const passport = require('passport');
 
-mongoose
-  .connect(URL)
-  .then(() => {
+mongoose.connect(URL).then(() => {
     console.log("Connected to Database");
   })
   .catch((err) => {

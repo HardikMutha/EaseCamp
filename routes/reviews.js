@@ -17,6 +17,17 @@ async function validateReview(req,res,next){
     }
 };
 
+const validateRating = async(req,res,next)=>{
+    const {rating}  = req.body;
+    const {id} = req.params;
+    if(parseInt(rating)<=0)
+    {
+        req.flash('error','Please Enter a valid Rating');
+        return res.redirect(`/campgrounds/${id}`);
+    }
+    next();
+};
+
 //router.use(cookieParser());
 //router.use(session({secret:'thisismysecretkey'}));
 const isReviewOwner = async(req,res,next)=>{
@@ -31,7 +42,7 @@ const isReviewOwner = async(req,res,next)=>{
     next();
 };
 
-router.post("/campgrounds/:id/review",isAllowed,validateReview,catchAsync(rw.postNewReview));
+router.post("/campgrounds/:id/review",isAllowed,validateRating,validateReview,catchAsync(rw.postNewReview));
 
 router.delete('/campgrounds/:id/review/:reviewid',isAllowed,isReviewOwner,catchAsync(rw.deleteReview));
 

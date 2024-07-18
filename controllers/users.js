@@ -9,9 +9,14 @@ module.exports.addUser = async(req,res,next)=>{
         const registeredUser = await User.register(newUser,password);
         req.login(registeredUser,(err)=>{
             if(err)
+            {
                 return next(err);
-            req.flash('success','Welcome to Camp Ease');
-            res.redirect('/campgrounds');
+            }
+            else
+            {
+                req.flash('success','Welcome to Ease Camp');
+                return res.redirect('/campgrounds');
+            }
         });
     }
 

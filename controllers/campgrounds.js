@@ -17,7 +17,11 @@ module.exports.makenewCampground = async (req, res, next) => {
       await CampgroundSchema.validateAsync(newcg);
       const newcg1 = new campground(newcg);
       newcg1.author = req.user._id;
+      const imgs = req.files.map(f=>({url : f.path,
+        filename : f.filename}));
+      newcg1.img = imgs
       await newcg1.save();
+      console.log(newcg1);
       req.flash('success','Campground added successfully');
       res.redirect(`/campgrounds/${newcg1._id}`);
     }
@@ -33,7 +37,6 @@ module.exports.makenewCampground = async (req, res, next) => {
 
 module.exports.showCampground = async (req, res) => {
     const camground = await campground.findById(req.params.id).populate({path:'reviews',populate:{path:'author'}}).populate('author');
-    //console.log(camground);
     if(!camground)
     {
       req.flash('error','Requested campground does not exist');
@@ -55,7 +58,13 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
     const {id} = req.params;
     const nice = req.body;
+    const imgs = req.files.map(f=>({url : f.path,
+      filename : f.filename}));
+    console.log(imgs);
     cg1 = await campground.findByIdAndUpdate(id,nice);
+    cg1.img.push(...imgs);
+    console.log(cg1);
+    await cg1.save();
     req.flash('success','Campground successfully Updated');
     res.redirect(`/campgrounds/${id}`);
   };

@@ -1,15 +1,40 @@
-
 <% layout('/layouts/boilerplate.ejs') %>
+<link rel="stylesheet" href="/style.css">
+
+
 <div class="row d-flex justify-content-center">
   <div class="card col-6 mb-4" style="width: 28rem; height: fit-content;">
-    <img src="/images.jpg" class="card-img-top">
+    <div class="card-img-top">
+      <div id="carouselExample" class="carousel slide">
+        <div class="carousel-inner">
+          <div class="carousel-item active">
+            <img src="<%=camground.img[0].url%>" class="d-block w-100" alt="/images.jpg">
+          </div>
+          <% for(let i = 1 ;i<camground.img.length;i++){%>
+          <div class="carousel-item">
+            <img src="<%= camground.img[i].url %>" class="d-block w-100" alt="/images.jpg">
+          </div>
+          <% } %>
+    </div>
+        <% if(camground.img.length>1){%>
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+          <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+          <span class="carousel-control-next-icon" aria-hidden="true"></span>
+          <span class="visually-hidden">Next</span>
+        </button>
+        <% } %>
+      </div>
+    </div>
     <div class="card-body">
       <h4 class="card-title"><%=camground.title%></h4>
       <h5 class="card-title"><%=camground.location %></h5>
       <p class="card-text"><%=camground.description  %></p>
     </div>
     <ul class="list-group list-group-flush">
-      <li class="list-group-item">Price - <%= camground.price %></li>
+      <li class="list-group-item">Price - $<%= camground.price %>/Night</li>
       <li class="list-group-item">Posted By - <%= camground.author[0].username %> </li>
       <li class="list-group-item">Ratings - </li>
     </ul>
@@ -32,20 +57,39 @@
         <form action="/campgrounds/<%=camground._id%>/review" method="post" novalidate class=" needs-validation">
         <div class="d-flex">
          <label for="rate" class="form-label me-4 mt-1 ">Rating</label>
-          <input type="range" name="rating" id="rate" min="1" max="5" step="1">
+          <!-- <input type="range" name="rating" id="rate" min="1" max="5" step="1"> -->
+          <fieldset class="starability-grow">
+            <input type="radio" id="no-rate" class="input-no-rate" name="rating" value="0" checked aria-label="No rating." />
+            <input type="radio" id="first-rate1" name="rating" value="1" />
+            <label for="first-rate1" title="Terrible">1 star</label>
+            <input type="radio" id="first-rate2" name="rating" value="2" />
+            <label for="first-rate2" title="Not good">2 stars</label>
+            <input type="radio" id="first-rate3" name="rating" value="3" />
+            <label for="first-rate3" title="Average">3 stars</label>
+            <input type="radio" id="first-rate4" name="rating" value="4" />
+            <label for="first-rate4" title="Very good">4 stars</label>
+            <input type="radio" id="first-rate5" name="rating" value="5" />
+            <label for="first-rate5" title="Amazing">5 stars</label>
+          </fieldset>
         </div>
         <label for="body" class="d-block mb-2">Review</label>
         <textarea name="text" id="body" rows="4" cols="45" placeholder="Please Enter a Review" required class="form-control mb-3" style="width: 28rem;"></textarea>
-      <button class="btn btn-success mb-3">Submit</button>
+      <button class="btn btn-success mb-3" id="submitbtn">Submit</button>
     </form>
     <% } %>
-    <h2 class="ms-2">All Reviews -</h2>
+    <% if(camground.reviews && camground.reviews.length){ %>
+      <h2 class="ms-2">All Reviews -</h2>
     <% for(let review of camground.reviews) {%>
       <div class="card mb-3" style="width: 28rem;">
         <div class="card-body">
-          <h5 class="card-title">Rating : <%= review.rating%></h5>
+          <h5 class="card-title">Rating : 
+            <p class="starability-result mt-2" data-rating="<%= review.rating %>">
+              Rated: <%=review.rating  %> stars
+            </p>
+          </h5>
           <p class="card-text"><%= review.text%></p>
           <p class="card-text ms-auto" style="width: fit-content;">By ~ <%= review.author.username %></p>
+         <% if(review && user){%> 
           <% if(review.author._id.equals(user._id)){%>
             <form action="/campgrounds/<%= camground._id %>/review/<%= review._id%>?_method=DELETE" method="post">
               <button class="btn btn-sm btn-danger" style="height: auto; width: fit-content;">
@@ -56,8 +100,13 @@
               </button>
               </form>
           <% } %>
+          <% } %>
         </div>
       </div>
     <% } %>
+    <% }else{ %>
+      <h2 class="ms-2">No Reviews</h2>
+    <% } %>
   </div>
 </div>
+

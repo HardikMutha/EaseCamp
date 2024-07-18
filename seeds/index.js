@@ -29,7 +29,16 @@ const seedDB = async function()
         const newground = new Campground({
             title:`${sample(places)} ${sample(descriptors)}`,
             location: `${destinations[newnum].city} ${destinations[newnum].state}`,
-            img :`https://picsum.photos/400?random=${Math.random()}`,
+            img : [
+                {
+                  url: 'https://res.cloudinary.com/dxjbmtq0h/image/upload/v1721236317/EaseCamp/yfma2orzg85qthov9cyi.jpg',
+                  filename: 'EaseCamp/yfma2orzg85qthov9cyi'
+                },
+                {
+                  url: 'https://res.cloudinary.com/dxjbmtq0h/image/upload/v1721236318/EaseCamp/mzgzi9oj4b6vwxqj2lp7.jpg',
+                  filename: 'EaseCamp/mzgzi9oj4b6vwxqj2lp7'
+                }
+              ],
             price:price,
             description : 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non, similique! Necessitatibus velit voluptate omnis molestiae praesentium. Magni, quod sed molestias ipsa nostrum et adipisci culpa, voluptas alias at rerum corrupti!',
             author : '66958784c6a9335490cc2748'

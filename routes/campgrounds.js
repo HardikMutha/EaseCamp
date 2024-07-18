@@ -5,7 +5,9 @@ const campground = require("../models/campground");
 const {CampgroundSchema} = require("../Schema");
 const {isAllowed} = require('../middleware');
 const cg = require('../controllers/campgrounds');
-
+const multer = require('multer');
+const {storage} = require('../cloudinary');
+const upload = multer({storage:storage});
 
 async function validateCampground(req, res, next) {
     try {
@@ -28,13 +30,14 @@ const isAuthor = async(req,res,next)=>{
 
 router.route('/campgrounds')
 .get(catchAsync(cg.showAllCampgrounds))
-.post(isAllowed,validateCampground,catchAsync(cg.makenewCampground));
+.post(isAllowed,upload.array('image'),validateCampground,catchAsync(cg.makenewCampground));
+
 
 router.get("/campgrounds/new",isAllowed,cg.renderNewCgForm);
 
 router.route('/campgrounds/:id')
 .get(catchAsync(cg.showCampground))
-.put(isAllowed,isAuthor,validateCampground,catchAsync(cg.updateCampground))
+.put(isAllowed,isAuthor,upload.array('image'),validateCampground,catchAsync(cg.updateCampground))
 .delete(isAllowed,isAuthor,catchAsync(cg.deleteCampground));
 
 router.get("/campgrounds/:id/edit",isAllowed,isAuthor,

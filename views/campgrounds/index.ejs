@@ -1,14 +1,14 @@
 <% layout('/layouts/boilerplate.ejs') %>
 <h1 class="mx-auto" style="width: fit-content;">List of All Campgrounds</h1>
 <div>
-  <a href="/campgrounds/new">Add a Campground</a>
+  <span class="d-flex justify-content-center my-3"><a href="/campgrounds/new" class="btn btn-success" style="width: fit-content;">Add a Campground</a></span>
   <div class="container-fluid">
     <div class="row">
       <% for(let i=0;i<allcampgrounds.length;i=i+1){%>
         <div class="col-md-6 col-lg-4 col-xl-4 col-xxl-3">
           <div class="card m-3" style="width: 18rem;">
-            <img src="/images.jpg" class="card-img-top">
-            <!-- <img src="/images.jpg" class="card-img-top"> -->
+            <!-- <img src="<%= //allcampgrounds[i].img[0].url %>" class="card-img-top"> -->
+             <img src="/images.jpg" class="card-img-top">
             <div class="card-body">
               <h5 class="card-title"><%= allcampgrounds[i].title%></h5>
               <p class="card-text"><%=allcampgrounds[i].description%></p>
@@ -19,6 +19,9 @@
       <% } %>
     </div>
   </div>
-<a href="/"><h2>Home</h2></a>
+<span class="d-flex justify-content-start my-2 ms-4">
+  <a href="/" class="btn btn-danger"> Back to Home Page</a>
+</span>
+  
 
 
