@@ -22,7 +22,19 @@ const User = require('./models/user');
 const passport = require('passport');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
+const MongoStore = require('connect-mongo');
+const store = MongoStore.create({
+  mongoUrl : URL,
+  touchAfter : 24*3600,
+  crypto : {
+    secret : 'thisismynigga'
+  }
+});
 
+
+store.on('error',(e) => {
+  console.log("Session Config Error",e);
+})
 
 mongoose.connect(URL).then(() => {
     console.log("Connected to Database");
@@ -40,7 +52,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static("./statics/"));
 app.use(cookieParser());
-app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{httpOnly:true,maxAge:1000*60*60*24*3}}));
+app.use(session({store:store,secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{httpOnly:true,maxAge:1000*60*60*24*3}}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
