@@ -49,5 +49,5 @@ Whether you're seeking a serene spot in the wilderness or a family-friendly camp
     ```
 ### Connect with Me
 
-- LinkedIn: [Mehmood Deshmukh](https://www.linkedin.com/in/mehmood-deshmukh-93533a2a7/)
-- GitHub: [Mehmood-Deshmukh](https://github.com/Mehmood-Deshmukh)
+- LinkedIn: [Hardik Mutha](https://www.linkedin.com/in/hardik-mutha08/)
+- GitHub: [Hardik Mutha](https://github.com/HardikMutha)
