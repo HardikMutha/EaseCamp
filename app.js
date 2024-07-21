@@ -20,6 +20,9 @@ const session = require('express-session');
 const cookieParser = require('cookie-parser');
 const User = require('./models/user');
 const passport = require('passport');
+const mongoSanitize = require('express-mongo-sanitize');
+const helmet = require('helmet');
+
 
 mongoose.connect(URL).then(() => {
     console.log("Connected to Database");
@@ -37,11 +40,13 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static("./statics/"));
 app.use(cookieParser());
-app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{maxAge:1000*60*60*24*3}}));
+app.use(session({secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{httpOnly:true,maxAge:1000*60*60*24*3}}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(mongoSanitize());
 passport.use(User.createStrategy());
+app.use(helmet({contentSecurityPolicy:false}));
 
 app.use((req,res,next)=>
 {

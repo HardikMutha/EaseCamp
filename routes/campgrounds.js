@@ -20,7 +20,7 @@ async function validateCampground(req, res, next) {
 const isAuthor = async(req,res,next)=>{
   const {id} = req.params;
   const cg1 = await campground.findById(id).populate('author');
-  if(!cg1.author[0]._id.equals(req.user._id))
+  if(cg1.author[0] && !cg1.author[0]._id.equals(req.user._id))
     {
         req.flash('error','Permission Denied !!');
         return res.redirect(`/campgrounds/${id}`);

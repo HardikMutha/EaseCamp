@@ -1,8 +1,10 @@
+require('dotenv').config();
+const maptilerClient = require('@maptiler/client');
 const campground = require("../models/campground");
-//const catchAsync = require("../utils/catchasync");
-//const campground = require("../models/campground");
 const {CampgroundSchema} = require("../Schema");
-//const {isAllowed} = require('../middleware');
+const {cloudinary} = require('../cloudinary');
+maptilerClient.config.apiKey = process.env.MAPTILER_API_KEY;
+
 
 module.exports.showAllCampgrounds = async (req, res) => {
     const allcampgrounds = await campground.find({});
@@ -12,6 +14,9 @@ module.exports.showAllCampgrounds = async (req, res) => {
 
 module.exports.makenewCampground = async (req, res, next) => {
     const newcg = req.body;
+    const {location} = req.body;
+    const result = await maptilerClient.geocoding.forward(location,{limit:1});
+    //res.send("nice");
     try
     {
       await CampgroundSchema.validateAsync(newcg);
@@ -19,9 +24,10 @@ module.exports.makenewCampground = async (req, res, next) => {
       newcg1.author = req.user._id;
       const imgs = req.files.map(f=>({url : f.path,
         filename : f.filename}));
-      newcg1.img = imgs
+      newcg1.img = imgs;
+      newcg1.geometry = result.features[0].geometry;
+      console.log(newcg1.geometry);
       await newcg1.save();
-      console.log(newcg1);
       req.flash('success','Campground added successfully');
       res.redirect(`/campgrounds/${newcg1._id}`);
     }
@@ -58,13 +64,23 @@ module.exports.renderEditForm = async (req, res) => {
 module.exports.updateCampground = async (req, res) => {
     const {id} = req.params;
     const nice = req.body;
-    const imgs = req.files.map(f=>({url : f.path,
-      filename : f.filename}));
-    console.log(imgs);
+    console.log(req.body.deleteI);
     cg1 = await campground.findByIdAndUpdate(id,nice);
+    const {location} = req.body;
+    const result = await maptilerClient.geocoding.forward(location,{limit:1});
+    cg1.geometry = result.features[0].geometry;
+    const imgs = req.files.map(f=>({url : f.path,filename : f.filename}));
     cg1.img.push(...imgs);
-    console.log(cg1);
     await cg1.save();
+    if(nice.deleteI && nice.deleteI.length)
+    {
+      await cg1.updateOne({$pull : {img :{filename:{$in : nice.deleteI}}}});
+      for(let f of nice.deleteI)
+      {
+        cloudinary.uploader.destroy(f);
+      }
+    }
+    console.log(cg1);
     req.flash('success','Campground successfully Updated');
     res.redirect(`/campgrounds/${id}`);
   };
@@ -81,12 +97,12 @@ module.exports.logout = (req,res)=>{
       if(err)
       {
         req.flash('error','Please try again');
-        res.redirect('/campgrounds');
+        res.redirect('/');
       }
       else
       {
         req.flash('success','GoodBye!!');
-        res.redirect('/campgrounds');
+        res.redirect('/');
       }
     });
 };

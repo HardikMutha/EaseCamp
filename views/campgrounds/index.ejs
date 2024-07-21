@@ -1,5 +1,20 @@
 <% layout('/layouts/boilerplate.ejs') %>
-<h1 class="mx-auto" style="width: fit-content;">List of All Campgrounds</h1>
+<link href="https://unpkg.com/maplibre-gl@2.0.0/dist/maplibre-gl.css" rel="stylesheet" crossorigin="anonymous"/>
+<script src="https://unpkg.com/maplibre-gl@2.0.0/dist/maplibre-gl.js"></script>
+
+<div id="map" style="width: 100%; height: 400px;">
+</div>
+
+<script>
+  const mapToken = '<%- process.env.MAPTILER_API_KEY %>';
+</script>
+
+<script>
+  const campgroundGeoJSON = [];
+  const all = {features:<%-JSON.stringify(allcampgrounds)%>};
+</script>
+
+<h1 class="mx-auto my-3" style="width: fit-content;">List of All Campgrounds</h1>
 <div>
   <span class="d-flex justify-content-center my-3"><a href="/campgrounds/new" class="btn btn-success" style="width: fit-content;">Add a Campground</a></span>
   <div class="container-fluid">
@@ -7,10 +22,11 @@
       <% for(let i=0;i<allcampgrounds.length;i=i+1){%>
         <div class="col-md-6 col-lg-4 col-xl-4 col-xxl-3">
           <div class="card m-3" style="width: 18rem;">
-            <!-- <img src="<%= //allcampgrounds[i].img[0].url %>" class="card-img-top"> -->
-             <img src="/images.jpg" class="card-img-top">
+            <img src="<%= allcampgrounds[i].img[0].url %>" class="card-img-top" crossorigin="anonymous">
+             <!-- <img src="/images.jpg" class="card-img-top"> -->
             <div class="card-body">
               <h5 class="card-title"><%= allcampgrounds[i].title%></h5>
+              <h6 class="card-text"><%= allcampgrounds[i].location %></h6>
               <p class="card-text"><%=allcampgrounds[i].description%></p>
               <a href="/campgrounds/<%= allcampgrounds[i]._id %>" class="btn btn-primary">Further Details</a>
             </div>
@@ -22,6 +38,4 @@
 <span class="d-flex justify-content-start my-2 ms-4">
   <a href="/" class="btn btn-danger"> Back to Home Page</a>
 </span>
-  
-
-
+<script src="/public/mainmap.js"></script>
