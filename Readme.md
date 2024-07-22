@@ -23,8 +23,10 @@ Whether you're seeking a serene spot in the wilderness or a family-friendly camp
 - **Frontend:** EJS,CSS,Bootsrap
 - **Backend:** Node.js, Express.js
 - **Database:** MongoDB
-- **API:** Maptiler API
+- **API:** Maptiler API, Cloudinary API
 
+## Deployed on
+- [Render](https://ease-camp.onrender.com)
 
 ### Requirements
 -   node
