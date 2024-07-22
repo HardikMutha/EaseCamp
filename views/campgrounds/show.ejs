@@ -54,7 +54,17 @@
     <ul class="list-group list-group-flush">
       <li class="list-group-item">Price - $<%= camground.price %>/Night</li>
       <li class="list-group-item">Posted By - <%= camground.author[0].username %> </li>
-      <li class="list-group-item">Ratings - </li>
+      <!-- <li class="list-group-item">Avg Ratings - Nil</li> -->
+      <% if (camground.reviews && camground.reviews.length) { %>
+        <% let x = 0; %>
+        <% for (let review of camground.reviews) { %>
+          <% x += Number(review.rating); %>
+        <% } %>
+        <% x = x / (camground.reviews.length * 1.0); %>
+        <li class="list-group-item">Avg Ratings - <%= x.toFixed(1) %>/5</li>
+      <% } else { %>
+        <li class="list-group-item">Avg Ratings - Nil</li>
+      <% } %>      
     </ul>
     <div class="card-body">
       <a href="../campgrounds/" class="card-link btn btn-primary">Back</a>
@@ -127,5 +137,4 @@
     <% } %>
   </div>
 </div>
-
 <script src="/public/showmappage.js"></script>
