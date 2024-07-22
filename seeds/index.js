@@ -1,3 +1,8 @@
+if(process.env.NODE_ENV !== 'production')
+{
+    require('dotenv').config();
+}
+    
 const mongoose = require('mongoose');
 const Campground = require('../models/campground');
 
@@ -10,7 +15,7 @@ connectdb().then(()=>console.log("Connection Successfull with database")).catch(
 
 async function connectdb()
 {
-    await mongoose.connect('mongodb://localhost:27017/Campground');
+    await mongoose.connect(process.env.MONGO_CONNECTION_STRING);
 };
 
 

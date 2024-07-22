@@ -22,8 +22,11 @@
       <% for(let i=0;i<allcampgrounds.length;i=i+1){%>
         <div class="col-md-6 col-lg-4 col-xl-4 col-xxl-3">
           <div class="card m-3" style="width: 18rem;">
+            <% if(allcampgrounds[i].img && allcampgrounds[i].img.length){ %>
             <img src="<%= allcampgrounds[i].img[0].url %>" class="card-img-top" crossorigin="anonymous">
-             <!-- <img src="/images.jpg" class="card-img-top"> -->
+            <% }else{ %>
+             <img src="/images.jpg" class="card-img-top">
+             <% } %>
             <div class="card-body">
               <h5 class="card-title"><%= allcampgrounds[i].title%></h5>
               <h6 class="card-text"><%= allcampgrounds[i].location %></h6>

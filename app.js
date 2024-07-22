@@ -4,7 +4,7 @@ if(process.env.NODE_ENV !== 'production')
 }
 
 
-const URL = "mongodb://localhost:27017/Campground";
+const URL = process.env.MONGO_CONNECTION_STRING || 'mongodb://127.0.0.1:27017/?directConnection=true&serverSelectionTimeoutMS=2000&appName=mongosh+2.2.12';
 const express = require("express");
 const app = express();
 const path = require("path");
@@ -23,11 +23,13 @@ const passport = require('passport');
 const mongoSanitize = require('express-mongo-sanitize');
 const helmet = require('helmet');
 const MongoStore = require('connect-mongo');
+const secret = process.env.SECRET|| 'ThisshouldbeSecret';
+
 const store = MongoStore.create({
   mongoUrl : URL,
   touchAfter : 24*3600,
   crypto : {
-    secret : 'thisismynigga'
+    secret : secret 
   }
 });
 
@@ -47,12 +49,13 @@ mongoose.connect(URL).then(() => {
 app.set("view engine", "ejs");
 app.set("views", path.join(__dirname, "views"));
 
+
 app.engine("ejs", ejsMate);
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(methodOverride("_method"));
 app.use(express.static("./statics/"));
 app.use(cookieParser());
-app.use(session({store:store,secret:'thisismysecretkey',resave:false,saveUninitialized:true,cookie:{httpOnly:true,maxAge:1000*60*60*24*3}}));
+app.use(session({store:store,secret:secret,resave:false,saveUninitialized:true,cookie:{httpOnly:true,maxAge:1000*60*60*24*3}}));
 app.use(flash());
 app.use(passport.initialize());
 app.use(passport.session());
